@@ -20,7 +20,7 @@ const MyComponent = () => {
       <h1>Dados do Backend:</h1>
       <ul>
         {data.map((item) => (
-          <li key={item.id}>{item.nome}</li>
+          <li key={item.id}>{item.nome} - {item.ano}, ID: {item.id}</li>
         ))}
       </ul>
     </div>

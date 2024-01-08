@@ -4,7 +4,6 @@ import MyComponent from './Api';
 function App() {
   return (
     <div>
-      <h1>Minha Aplicação React</h1>
       <MyComponent />
     </div>
   );
