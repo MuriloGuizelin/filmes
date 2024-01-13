@@ -10,7 +10,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 @Entity
 @Table(name = "Filmes")
-public class Entities extends RepresentationModel<Entities>{
+public class FilmeEntity extends RepresentationModel<FilmeEntity>{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

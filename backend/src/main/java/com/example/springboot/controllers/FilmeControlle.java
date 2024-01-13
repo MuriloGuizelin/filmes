@@ -1,8 +1,8 @@
 package com.example.springboot.controllers;
 
-import com.example.springboot.dtos.DTO;
-import com.example.springboot.models.Entities;
-import com.example.springboot.repositories.Repository;
+import com.example.springboot.dtos.FilmeDTO;
+import com.example.springboot.models.FilmeEntity;
+import com.example.springboot.repositories.FilmeRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +19,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-public class Controller {
+public class FilmeControlle {
 	
 	@Autowired
-	Repository filmes;
+	FilmeRepository filmes;
 	
 	@GetMapping("/filmes")
-	public ResponseEntity<List<Entities>> getAllFilmes(){
-		List<Entities> Filmes = filmes.findAll();
+	public ResponseEntity<List<FilmeEntity>> getAllFilmes(){
+		List<FilmeEntity> Filmes = filmes.findAll();
 		if(!Filmes.isEmpty()) {
-			for(Entities filme : Filmes) {
+			for(FilmeEntity filme : Filmes) {
 				UUID id = filme.getId();
-				filme.add(linkTo(methodOn(Controller.class).getOneFilme(id)).withSelfRel());
+				filme.add(linkTo(methodOn(FilmeControlle.class).getOneFilme(id)).withSelfRel());
 			}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(Filmes);
@@ -38,24 +38,24 @@ public class Controller {
 
 	@GetMapping("/filmes/{id}")
 	public ResponseEntity<Object> getOneFilme(@PathVariable(value="id") UUID id){
-		Optional<Entities> Filme = filmes.findById(id);
+		Optional<FilmeEntity> Filme = filmes.findById(id);
 		if(Filme.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Filme não encontrado.");
 		}
-		Filme.get().add(linkTo(methodOn(Controller.class).getAllFilmes()).withRel("Lista dos filmes"));
+		Filme.get().add(linkTo(methodOn(FilmeControlle.class).getAllFilmes()).withRel("Lista dos filmes"));
 		return ResponseEntity.status(HttpStatus.OK).body(Filme.get());
 	}
 	
 	@PostMapping("/filmes")
-	public ResponseEntity<Entities> saveFime(@RequestBody @Valid DTO FilmeRecordDto) {
-		var Entidade = new Entities();
+	public ResponseEntity<FilmeEntity> saveFime(@RequestBody @Valid FilmeDTO FilmeRecordDto) {
+		var Entidade = new FilmeEntity();
 		BeanUtils.copyProperties(FilmeRecordDto, Entidade);
 		return ResponseEntity.status(HttpStatus.CREATED).body(filmes.save(Entidade));
 	}
 	
 	@DeleteMapping("/filmes/{id}")
 	public ResponseEntity<Object> deleteFilme(@PathVariable(value="id") UUID id) {
-		Optional<Entities> filme = filmes.findById(id);
+		Optional<FilmeEntity> filme = filmes.findById(id);
 		if(filme.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Filme não encontrado.");
 		}
@@ -64,8 +64,8 @@ public class Controller {
 	}
 	
 	@PutMapping("/filmes/{id}")
-	public ResponseEntity<Object> updateProduct(@PathVariable(value="id") UUID id, @RequestBody @Valid DTO FilmeRecordDto) {
-		Optional<Entities> filme = filmes.findById(id);
+	public ResponseEntity<Object> updateProduct(@PathVariable(value="id") UUID id, @RequestBody @Valid FilmeDTO FilmeRecordDto) {
+		Optional<FilmeEntity> filme = filmes.findById(id);
 		if(filme.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Filme não encontrado.");
 		}

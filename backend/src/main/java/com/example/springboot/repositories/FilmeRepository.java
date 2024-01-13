@@ -2,10 +2,10 @@ package com.example.springboot.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.springboot.models.Entities;
+import com.example.springboot.models.FilmeEntity;
 
 import java.util.UUID;
 
-public interface Repository extends JpaRepository<Entities, UUID>{
+public interface FilmeRepository extends JpaRepository<FilmeEntity, UUID>{
 
 }
